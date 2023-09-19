@@ -186,7 +186,7 @@ def generate_find_package(vtk_src_dir, application_srcs):
     for m in sorted(all_modules):
         m = m.removeprefix('VTK::')
         res.append(' ' * 2 + m)
-    res.append(')')
+    res.append('REQUIRED)')
     return res
 
 
