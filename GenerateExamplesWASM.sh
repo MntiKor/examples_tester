@@ -16,7 +16,7 @@ do
 	topic_name=$(basename ${topic})
 	for f in ${topic}/*.cxx
 	do
-		find_packages=$(python WhatModulesVTK.py ${vtk_source_dir} ${f})
+		find_packages=$(python3 WhatModulesVTK.py ${vtk_source_dir} ${f})
 		name=$(basename ${f} .cxx)
 		echo ${name}
 		target_path=${target_dir}/${topic_name}/${name}
