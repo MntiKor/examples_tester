@@ -18,7 +18,7 @@ do
 	do
 		find_packages=$(python WhatModulesVTK.py ${vtk_source_dir} ${f})
 		name=$(basename ${f} .cxx)
-		echo ${name} >> results/logs.txt
+		echo ${name}
 		target_path=${target_dir}/${topic_name}/${name}
 		mkdir -p ${target_path}
 		cp ${f} ${target_path}
