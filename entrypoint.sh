@@ -1,6 +1,8 @@
 #!/bin/bash
 
 cd /work
+count_working=0
+count_fails=0
 for topic in */
 do
 	for example in ${topic}/*/
@@ -11,13 +13,19 @@ do
 		if [ $? -ne 0 ]
 		then
 			echo $(basename ${example}) >> /work/doesntcompile.txt
+			count_fails+=1
 		else
 			cmake --build .
 			if [ $? -ne 0 ]
 			then
 				echo $(basename ${example}) >> /work/doesntcompile.txt
+				count_fails+=1
+			else
+				count_working+=1
 			fi
 		fi
 		cd /work
 	done
 done
+echo ${count_working} worked
+echo ${count_fails} failed
