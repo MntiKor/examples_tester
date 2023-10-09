@@ -6,7 +6,7 @@ emsdk_dir=${repo}/emsdk
 
 if [ ! -d ${emsdk_dir} ]
 then
-	git clone git@github.com:emscripten-core/emsdk.git
+	git clone https://github.com/emscripten-core/emsdk.git
 	${emsdk_dir}/emsdk install latest
 	${emsdk_dir}/emsdk activate latest
 	source ${emsdk_dir}/emsdk_env.sh
@@ -17,10 +17,10 @@ vtk_dir=${repo}/vtk
 
 if [ ! -d ${vtk_dir} ]
 then
-	git clone git@gitlab.kitware.com:astucky/vtk.git
+	git clone https://gitlab.kitware.com/astucky/vtk.git
 	mkdir -p vtk/build
 	pushd vtk/build
-	git checkout hdf5-emscripten-compatibility
+	git checkout hdf5-emsctipten-compatibility
 	emcmake cmake \
 		-S .. \
 		-B . \
@@ -39,27 +39,42 @@ fi
 
 source ${emsdk_dir}/emsdk_env.sh
 mkdir build
+mkdir pregen
 for topic in sources/*
 do
-	for example in topic/*
+	topic_name=$(basename ${topic})
+	./GenerateExamplesWASM.sh ${vtk_dir} ${topic} pregen/${topic_name}
+	for example in pregen/${topic_name}/*
 	do
-		build_dir=build/$(basename ${topic})/$(basename $(example))
+		example_name=$(basename ${example})
+		build_dir=build/${topic_name}/${example_name}
 		mkdir -p ${build_dir}
-		pushd ${build_dir}
 
-		emcmake cmake -GNinja -DEMSCRIPTEN:Bool=true -DVTK_DIR=${vtk_dir}/build ${example}
+		emcmake cmake -GNinja -DEMSCRIPTEN:Bool=true -DVTK_DIR=${vtk_dir}/build -S ${example} -B ${build_dir}
 
 		if [ $? -ne 0 ]
 		then
-			echo $(basename ${example}) >> ${repo}/doesntcompile.txt
+			echo ${example_name} >> ${repo}/doesntcompile.txt
 		else
-			cmake --build .
+			cmake --build ${build_dir}
 			if [ $? -ne 0 ]
 			then
-				echo $(basename ${example}) >> ${repo}/doesntcompile.txt
+				echo ${example_name} >> ${repo}/doesntcompile.txt
+			else
+				aws s3api put-object \
+					--bucket vtk-wasm-examples \
+					--key ${example_name}/${example_name}.wasm \
+					--body ${example_name}.wasm \
+					--content-type application/wasm
+				aws s3api put-object \
+					--bucket vtk-wasm-examples \
+					--key ${example_name}/${example_name}.js \
+					--body ${example_name}.js
+				aws s3api put-object \
+					--bucket vtk-wasm-examples \
+					--key ${example_name}/index.html \
+					--body index.html
 			fi
 		fi
-
-		popd
 	done
 done
