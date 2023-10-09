@@ -64,16 +64,19 @@ do
 				aws s3api put-object \
 					--bucket vtk-wasm-examples \
 					--key ${example_name}/${example_name}.wasm \
-					--body ${example_name}.wasm \
+					--body ${build_dir}/${example_name}.wasm \
+					--acl public-read \
 					--content-type application/wasm
 				aws s3api put-object \
 					--bucket vtk-wasm-examples \
 					--key ${example_name}/${example_name}.js \
-					--body ${example_name}.js
+					--body ${build_dir}/${example_name}.js \
+					--acl public-read
 				aws s3api put-object \
 					--bucket vtk-wasm-examples \
 					--key ${example_name}/index.html \
-					--body index.html
+					--body ${build_dir}/index.html \
+					--acl public-read
 			fi
 		fi
 	done
