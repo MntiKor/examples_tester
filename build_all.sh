@@ -17,10 +17,9 @@ vtk_dir=${repo}/vtk
 
 if [ ! -d ${vtk_dir} ]
 then
-	git clone https://gitlab.kitware.com/astucky/vtk.git
+	git clone https://gitlab.kitware.com/vtk/vtk.git
 	mkdir -p vtk/build
 	pushd vtk/build
-	git checkout hdf5-emsctipten-compatibility
 	emcmake cmake \
 		-S .. \
 		-B . \
