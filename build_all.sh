@@ -17,7 +17,7 @@ vtk_dir=${repo}/vtk
 
 if [ ! -d ${vtk_dir} ]
 then
-	git clone https://gitlab.kitware.com/vtk/vtk.git
+	git clone --depth 1 https://gitlab.kitware.com/vtk/vtk.git
 	mkdir -p vtk/build
 	pushd vtk/build
 	emcmake cmake \
