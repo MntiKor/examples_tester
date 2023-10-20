@@ -11,6 +11,8 @@ then
 	${emsdk_dir}/emsdk activate latest
 	source ${emsdk_dir}/emsdk_env.sh
 	embuilder build sdl2
+else
+	source ${emsdk_dir}/emsdk_env.sh
 fi
 
 vtk_dir=${repo}/vtk
@@ -35,8 +37,6 @@ then
 	cmake --build .
 	popd
 fi
-
-source ${emsdk_dir}/emsdk_env.sh
 mkdir build
 mkdir pregen
 for topic in sources/*
