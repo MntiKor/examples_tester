@@ -47,6 +47,10 @@ list(APPEND emscripten_link_options
   "SHELL:-s FORCE_FILESYSTEM"
 )
 
+list(APPEND emscripten_compile_options
+  "SHELL:-std=c++17"
+)
+
 set(emscripten_debug_options)
 set(DEBUGINFO "PROFILE" CACHE STRING "Type of debug info")
 set_property(CACHE DEBUGINFO PROPERTY
