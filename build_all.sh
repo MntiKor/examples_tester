@@ -61,21 +61,27 @@ do
 			then
 				echo ${example_name} >> ${repo}/doesntcompile.txt
 			else
+				gzip ${build_dir}/${example_name}.wasm
 				aws s3api put-object \
 					--bucket vtk-wasm-examples \
 					--key ${example_name}/${example_name}.wasm \
-					--body ${build_dir}/${example_name}.wasm \
+					--body ${build_dir}/${example_name}.wasm.gz \
+					--content-encoding gzip \
 					--acl public-read \
 					--content-type application/wasm
+				gzip ${build_dir}/${example_name}.js
 				aws s3api put-object \
 					--bucket vtk-wasm-examples \
 					--key ${example_name}/${example_name}.js \
-					--body ${build_dir}/${example_name}.js \
+					--body ${build_dir}/${example_name}.js.gz \
+					--content-encoding gzip \
 					--acl public-read
+				gzip ${build_dir}/index.html
 				aws s3api put-object \
 					--bucket vtk-wasm-examples \
 					--key ${example_name}/index.html \
-					--body ${build_dir}/index.html \
+					--body ${build_dir}/index.html.gz \
+					--content-encoding gzip \
 					--acl public-read
 			fi
 		fi
