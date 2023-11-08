@@ -7,15 +7,15 @@
 </head>
 
 <body style="margin: 0px">
-  <div style="display: flex; flex-direction: row; width: 100vw; height: 100vh">
+  <div id="display-div" style="display: flex; flex-direction: row; width: 100vw; height: 100vh">
     <div id="loading">
-      Loading WebAssembly environment. This could take some time. More information:
-      <a href="https://emscripten.org/">&bull; Emscripten, a WebAssembly compiler.</a>
-      <a href="https://hub.docker.com/r/kitware/vtk-wasm">&bull; VTK-WASM Docker image.</a>
-      <a href="https://docs.vtk.org/en/latest/advanced/build_wasm_emscripten.html">&bull; Instructions to build and install VTK-WASM on your system.</a>
+      <p>Loading WebAssembly environment. This could take some time. More information:</p>
+      <p><a href="https://emscripten.org/">&bull; Emscripten, a WebAssembly compiler.</a></p>
+      <p><a href="https://hub.docker.com/r/kitware/vtk-wasm">&bull; VTK-WASM Docker image.</a></p>
+      <p><a href="https://docs.vtk.org/en/latest/advanced/build_wasm_emscripten.html">&bull; Instructions to build and install VTK-WASM on your system.</a></p>
     </div>
     <canvas id="canvas" style="width: 75vw; height: 100vh; display:none;"></canvas>
-    <textarea readonly id="output" rows="8" style="width: 25vw; margin-left: 2px; resize: none; border: none; outline: none"></textarea>
+    <textarea readonly id="output" rows="8" style="width: 25vw; margin-left: 2px; resize: none; border: none; outline: none; padding: 0"></textarea>
   </div>
   <script type='text/javascript'>
     document.addEventListener('keydown', function(event) {
@@ -23,10 +23,22 @@
             event.preventDefault();
     }, true);
 
+    var canvas = document.getElementById('canvas');
+
+    if (window.self !== window.top)
+    {
+        document.getElementById('display-div').style.flexDirection = 'column';
+        var output = document.getElementById('output');
+        output.style.height = '25vh';
+        output.style.width = '100vw';
+        output.style.margin = '0';
+        canvas.style.width = '100vw';
+        canvas.style.height = '75vh';
+    }
+
     var Module = {
         'arguments': ['YYY'],
       'canvas': (function () {
-        var canvas = document.getElementById('canvas');
         canvas.addEventListener(
           "webglcontextlost",
           function (e) {
