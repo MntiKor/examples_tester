@@ -8,7 +8,7 @@ with open('pregen/CMakeLists.txt', 'r') as cmake:
 subdirectories = []
 for path in glob.glob('pregen/**/CMakeLists.txt', recursive=True):
     subdirectories.append('add_subdirectory(' + path.removeprefix('pregen/').removesuffix('CMakeLists.txt') + ')')
-data.replace('XXX', '\n'.join(subdirectories))
+data = data.replace('XXX', '\n'.join(subdirectories))
 
 with open('pregen/CMakeLists.txt', 'w') as cmake:
     cmake.write(data)

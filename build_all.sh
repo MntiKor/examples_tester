@@ -56,26 +56,26 @@ do
 	do
 		example_name=$(basename ${example})
 		gzip ${example}/${example_name}.wasm
-		aws s3api put-object \
-			--bucket vtk-wasm-examples \
-			--key ${example_name}/${example_name}.wasm \
-			--body ${example}/${example_name}.wasm.gz \
-			--content-encoding gzip \
-			--acl public-read \
-			--content-type application/wasm
+		# aws s3api put-object \
+		# 	--bucket vtk-wasm-examples \
+		# 	--key ${example_name}/${example_name}.wasm \
+		# 	--body ${example}/${example_name}.wasm.gz \
+		# 	--content-encoding gzip \
+		# 	--acl public-read \
+		# 	--content-type application/wasm
 		gzip ${example}/${example_name}.js
-		aws s3api put-object \
-			--bucket vtk-wasm-examples \
-			--key ${example_name}/${example_name}.js \
-			--body ${example}/${example_name}.js.gz \
-			--content-encoding gzip \
-			--acl public-read
+		# aws s3api put-object \
+		# 	--bucket vtk-wasm-examples \
+		# 	--key ${example_name}/${example_name}.js \
+		# 	--body ${example}/${example_name}.js.gz \
+		# 	--content-encoding gzip \
+		# 	--acl public-read
 		gzip ${example}/index.html
-		aws s3api put-object \
-			--bucket vtk-wasm-examples \
-			--key ${example_name}/index.html \
-			--body ${example}/index.html.gz \
-			--content-encoding gzip \
-			--acl public-read
+		# aws s3api put-object \
+		# 	--bucket vtk-wasm-examples \
+		# 	--key ${example_name}/index.html \
+		# 	--body ${example}/index.html.gz \
+		# 	--content-encoding gzip \
+		# 	--acl public-read
 	done
 done
