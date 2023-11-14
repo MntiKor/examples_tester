@@ -48,7 +48,7 @@ done
 
 python3 GenerateSuperCMake.py
 emcmake cmake -GNinja -DEMSCRIPTEN:Bool=true -DVTK_DIR=${vtk_dir}/build -DDEBUGINFO=NONE -S pregen -B build
-cmake --build build
+cmake --build build -- -k 0
 
 for topic in build/*
 do
