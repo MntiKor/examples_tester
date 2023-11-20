@@ -46,6 +46,7 @@ set(emscripten_compile_options)
 list(APPEND emscripten_link_options
   "SHELL:-s WASM=1"
   "SHELL:-s ALLOW_MEMORY_GROWTH=1"
+  "SHELL:-s STACK_SIZE=2mb"
 )
 
 set(emscripten_debug_options)
